@@ -54,6 +54,9 @@ static inline int main_menu(SDL_Window *window, SDL_Renderer *renderer, FILE *lo
 		fprintf(logfp, "draw_bg() error file game_main.c line %d\n", __LINE__);
 		return ERROR_MM;
 	}
+	SDL_RenderPresent(renderer);
+	while (true);
+	return QUIT_MM;
 }
 
 
@@ -94,6 +97,7 @@ static inline int game_init(SDL_Window **window, SDL_Renderer **renderer, FILE *
 		return EXIT_FAILURE;
 	}
 	*window = SDL_CreateWindow(app_name, display_mode->w, display_mode->h, SDL_WINDOW_FULLSCREEN);
+	printf("W = %d H = %d\n", display_mode->w, display_mode->h);
 	if (NULL == *window){
 		fprintf(*logfp, "SDL_CreateWindow() error file game_main.c line %d\n%s\n", __LINE__, SDL_GetError());
 		fclose(*logfp);

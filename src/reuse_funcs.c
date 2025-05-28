@@ -5,13 +5,14 @@
 
 /* This function draws a tiled texture on window */
 int draw_bg(FILE *logfp, SDL_Renderer *renderer, SDL_Texture *tex, const int ww, const int wh, const int tw, const int th){
-	SDL_FRect rect, src;
+	SDL_FRect rect;
+/*
+	SDL_FRect src;
 	int rw, rh;
-
+*/
 	rect.w = (float)tw;
 	rect.h = (float)th;
 	rect.y = 0.0f;
-
 	while (rect.y <= (float)wh){
 		rect.x = 0.0f;
 		while (rect.x <= (float)ww){
@@ -23,6 +24,15 @@ int draw_bg(FILE *logfp, SDL_Renderer *renderer, SDL_Texture *tex, const int ww,
 		}
 		rect.y += rect.h;
 	}
+/*
+	So the code below is just my mistake.
+	But I learned that if I give SDL_RenderTexture() a destination SDL_FRect
+	that falls outside the actual window then it works fine without errors.
+	And also the loop above was not my intention, I was trying to print the
+	tiled texture as many times on the screen as it can fit completely.
+	Oh well, it worked out fine. Good thing I decided to test my code.
+*/
+/*
 	rw = ww % tw;
 	if (rw){
 		rect.w = (float)rw;
@@ -72,5 +82,6 @@ int draw_bg(FILE *logfp, SDL_Renderer *renderer, SDL_Texture *tex, const int ww,
 			return EXIT_FAILURE;
 		}
 	}
+*/
 	return EXIT_SUCCESS;
 }
