@@ -18,7 +18,8 @@ enum {SINGLEPLAYER_MM, MULTIPLAYER_HOST_MM, MULTIPLAYER_CLIENT_MM, CREATOR_MM, Q
 static inline int main_menu(SDL_Window *window, SDL_Renderer *renderer, FILE *logfp){
 	SDL_Surface *surface;
 	SDL_Texture *sand_tex, *char_tex;
-	int w, h;
+	SDL_FRect sp_rect, mphost_rect, mpclient_rect, cr_rect, qt_rect;
+	int w, h, bw, bh;
 
 	surface = SDL_LoadBMP(sand_img);
 	if (NULL == surface){
@@ -50,12 +51,13 @@ static inline int main_menu(SDL_Window *window, SDL_Renderer *renderer, FILE *lo
 		fprintf(logfp, "SDL_GetWindowSize() error file game_main.c line %d\n%s\n", __LINE__, SDL_GetError());
 		return ERROR_MM;
 	}
-	if (EXIT_FAILURE == draw_bg(logfp, renderer, sand_tex, w, h, 256, 256)){
+	if (EXIT_FAILURE == draw_bg(logfp, renderer, sand_tex, w, h, SAND_IMG_W, SAND_IMG_H)){
 		fprintf(logfp, "draw_bg() error file game_main.c line %d\n", __LINE__);
 		return ERROR_MM;
 	}
-	SDL_RenderPresent(renderer);
-	while (true);
+
+	bh = h / 14;
+
 	return QUIT_MM;
 }
 

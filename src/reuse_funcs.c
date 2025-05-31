@@ -1,9 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include <SDL.h>
 
-/* This function draws a tiled texture on window */
+/* This enum provides the flag values that can be provided to draw_text() */
+enum {TEXT_CENTER, TEXT_LEFT, TEXT_RIGHT, TEXT_CENTER_TRANSL};
+
+
+/*
+The function below draws a tiled texture on window.
+Arguments: Log file pointer, renderer pointer, texture pointer, window width px, window height px,
+image width px, height height px
+*/
+
 int draw_bg(FILE *logfp, SDL_Renderer *renderer, SDL_Texture *tex, const int ww, const int wh, const int tw, const int th){
 	SDL_FRect rect;
 /*
@@ -84,4 +94,30 @@ int draw_bg(FILE *logfp, SDL_Renderer *renderer, SDL_Texture *tex, const int ww,
 	}
 */
 	return EXIT_SUCCESS;
+}
+
+
+/*
+The function below prints text.
+Given an SDL_FRect representing the space for text to be drawnn,
+this functions prints the string in maximum height possible.
+Alignment and color of text can also be specified.
+*/
+int draw_text(FILE *logfp, SDL_Renderer *renderer, SDL_Texture *char_tex, char *str, SDL_FRect *space, const int color, const int alg){
+	SDL_FRect dst, src;
+	int slen, cs;
+
+	slen = strlen(str);
+	if ((slen * ((int)space->h) <= (int)space->w){
+		cs = (int)space->h;
+	}
+	else {
+		cs = ((int)space->w) / slen;
+	}
+	switch (alg){
+		case TEXT_CENTER:
+		case TEXT_LEFT:
+		case TEXT_RIGHT:
+		case TEXT_CENTER_TRANSL:
+	}
 }
