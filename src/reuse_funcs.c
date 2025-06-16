@@ -3,29 +3,16 @@
 #include <stdbool.h>
 #include <string.h>
 #include <SDL.h>
+#include <tank_game.h>
 
-/* This enum provides the flag values that can be provided to draw_text() */
-enum {TEXT_CENTER, TEXT_LEFT, TEXT_RIGHT, TEXT_CENTER_TRANSL};
-
-
-/*
-The function below draws a tiled texture on window.
-Arguments: Log file pointer, renderer pointer, texture pointer, window width px, window height px,
-image width px, height height px
-*/
-
-int draw_bg(FILE *logfp, SDL_Renderer *renderer, SDL_Texture *tex, const int ww, const int wh, const int tw, const int th){
+int draw_tiled_background(FILE *logfp, SDL_Renderer *renderer, SDL_Texture *tex, const int window_width, const int window_height, const int texture_width, const int texture_height){
 	SDL_FRect rect;
-/*
-	SDL_FRect src;
-	int rw, rh;
-*/
-	rect.w = (float)tw;
-	rect.h = (float)th;
+	rect.w = (float)texture_width;
+	rect.h = (float)texture_height;
 	rect.y = 0.0f;
-	while (rect.y <= (float)wh){
+	while (rect.y <= (float)window_height){
 		rect.x = 0.0f;
-		while (rect.x <= (float)ww){
+		while (rect.x <= (float)window_width){
 			if (false == SDL_RenderTexture(renderer, tex, NULL, &rect)){
 				fprintf(logfp, "SDL_RenderTexture() error file reuse_funcs.c line %d\n%s\n", __LINE__, SDL_GetError());
 				return EXIT_FAILURE;
@@ -34,90 +21,60 @@ int draw_bg(FILE *logfp, SDL_Renderer *renderer, SDL_Texture *tex, const int ww,
 		}
 		rect.y += rect.h;
 	}
-/*
-	So the code below is just my mistake.
-	But I learned that if I give SDL_RenderTexture() a destination SDL_FRect
-	that falls outside the actual window then it works fine without errors.
-	And also the loop above was not my intention, I was trying to print the
-	tiled texture as many times on the screen as it can fit completely.
-	Oh well, it worked out fine. Good thing I decided to test my code.
-*/
-/*
-	rw = ww % tw;
-	if (rw){
-		rect.w = (float)rw;
-		rect.h = (float)th;
-		rect.y = 0.0f;
-		rect.x = (float)((ww / tw) * tw);
-		src.x = 0.0f;
-		src.y = 0.0f;
-		src.h = (float)th;
-		src.w = (float)rw;
-		while (rect.y <= (float)wh){
-			if (false == SDL_RenderTexture(renderer, tex, &src, &rect)){
-				fprintf(logfp, "SDL_RenderTexture() error file reuse_funcs.c line %d\n%s\n", __LINE__, SDL_GetError());
-				return EXIT_FAILURE;
-			}
-			rect.y += rect.h;
-		}
-	}
-	rh = wh % th;
-	if (rh){
-		rect.w = (float)tw;
-		rect.h = (float)rh;
-		rect.y = (float)((wh / th) * th);
-		src.w = (float)tw;
-		src.h = (float)rh;
-		src.x = 0.0f;
-		src.y = 0.0f;
-		while (rect.x <= (float)ww){
-			if (false == SDL_RenderTexture(renderer, tex, &src, &rect)){
-				fprintf(logfp, "SDL_RenderTexture() error file reuse_funcs.c line %d\n%s\n", __LINE__, SDL_GetError());
-				return EXIT_FAILURE;
-			}
-			rect.x += rect.w;
-		}
-	}
-	if (rw && rh){
-		rect.x = (float)((ww / tw) * tw);
-		rect.y = (float)((wh / th) * th);
-		rect.w = (float)rw;
-		rect.h = (float)rh;
-		src.x = 0.0f;
-		src.y = 0.0f;
-		src.w = (float)rw;
-		src.h = (float)rh;
-		if (false == SDL_RenderTexture(renderer, tex, &src, &rect)){
-			fprintf(logfp, "SDL_RenderTexture() error file reuse_funcs.c line %d\n%s\n", __LINE__, SDL_GetError());
-			return EXIT_FAILURE;
-		}
-	}
-*/
 	return EXIT_SUCCESS;
 }
 
 
-/*
-The function below prints text.
-Given an SDL_FRect representing the space for text to be drawnn,
-this functions prints the string in maximum height possible.
-Alignment and color of text can also be specified.
-*/
-int draw_text(FILE *logfp, SDL_Renderer *renderer, SDL_Texture *char_tex, char *str, SDL_FRect *space, const int color, const int alg){
+int draw_text(FILE *logfp, SDL_Renderer *renderer, SDL_Texture *char_tex, const char *str, const SDL_FRect *space, const int color, const int alignment){
 	SDL_FRect dst, src;
-	int slen, cs;
+	int slen, cs, r, c, i;
+	union rgb u;
 
 	slen = strlen(str);
-	if ((slen * ((int)space->h) <= (int)space->w){
+	if ((slen * ((int)space->h)) <= (int)space->w){
 		cs = (int)space->h;
 	}
 	else {
 		cs = ((int)space->w) / slen;
 	}
-	switch (alg){
+	slen = cs * slen;
+	dst.y = space->y + (float)(((int)space->h - cs) / 2);
+	dst.w = (float)cs;
+	dst.h = (float)cs;
+	src.w = (float)CHAR_W;
+	src.h = (float)CHAR_H;
+	switch (alignment){
 		case TEXT_CENTER:
+			dst.x = space->x + (float)(((int)space->w - slen) / 2);
+			break;
 		case TEXT_LEFT:
+			dst.x = space->x;
+			break;
 		case TEXT_RIGHT:
+			dst.x = space->x + (float)((int)space->w - slen);
+			break;
 		case TEXT_CENTER_TRANSL:
+			dst.x = space->x + (float)(((int)space->w - slen) / 2);
 	}
+	u.hex = color;
+	if (false == SDL_SetTextureColorMod(char_tex, u.r, u.g, u.b)){
+		fprintf(logfp, "SDL_SetTextureColorMod() error file reuse_funcs.c line %d\n%s\n", __LINE__, SDL_GetError());
+		return EXIT_FAILURE;
+	}
+	for (i = 0; str[i]; ++i){
+		r = str[i] / NUM_CHAR;
+		c = str[i] % NUM_CHAR;
+		src.x = (float)(c * CHAR_W);
+		src.y = (float)(r * CHAR_H);
+		if (false == SDL_RenderTexture(renderer, char_tex, &src, &dst)){
+			fprintf(logfp, "SDL_RenderTexture() error file reuse_funcs.c line %d\n%s\n", __LINE__, SDL_GetError());
+			return EXIT_FAILURE;
+		}
+		dst.x += dst.w;
+	}
+	if (false == SDL_SetTextureColorMod(char_tex, 0xff, 0xff, 0xff)){
+		fprintf(logfp, "SDL_SetTextureColorMod() error file reuse_funcs.c line %d\n%s\n", __LINE__, SDL_GetError());
+		return EXIT_FAILURE;
+	}
+	return EXIT_SUCCESS;
 }
