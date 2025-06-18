@@ -99,7 +99,7 @@ static inline int main_menu(SDL_Window *window, SDL_Renderer *renderer, FILE *lo
 		}
 		if (sp_focus){
 			u.hex = BUTTON_UNFOCUSED_COLOR;
-			if (false == SDL_SetRenderDrawColor(renderer, u.r, u.g, u.b, 0xff)){
+			if (false == SDL_SetRenderDrawColor(renderer, u.v[2], u.v[1], u.v[0], 0xff)){
 				fprintf(logfp, "SDL_SetRenderDrawColor() error file game_main.c line %d\n%s\n", __LINE__, SDL_GetError());
 				return ERROR_MM;
 			}
@@ -114,7 +114,7 @@ static inline int main_menu(SDL_Window *window, SDL_Renderer *renderer, FILE *lo
 		}
 		else {
 			u.hex = BUTTON_FOCUSED_COLOR;
-			if (false == SDL_SetRenderDrawColor(renderer, u.r, u.g, u.b, 0xff)){
+			if (false == SDL_SetRenderDrawColor(renderer, u.v[2], u.v[1], u.v[0], 0xff)){
 				fprintf(logfp, "SDL_SetRenderDrawColor() error file game_main.c line %d\n%s\n", __LINE__, SDL_GetError());
 				return ERROR_MM;
 			}
@@ -129,7 +129,7 @@ static inline int main_menu(SDL_Window *window, SDL_Renderer *renderer, FILE *lo
 		}
 		if (mphost_focus){
 			u.hex = BUTTON_UNFOCUSED_COLOR;
-			if (false == SDL_SetRenderDrawColor(renderer, u.r, u.g, u.b, 0xff)){
+			if (false == SDL_SetRenderDrawColor(renderer, u.v[2], u.v[1], u.v[0], 0xff)){
 				fprintf(logfp, "SDL_SetRenderDrawColor() error file game_main.c line %d\n%s\n", __LINE__, SDL_GetError());
 				return ERROR_MM;
 			}
@@ -144,7 +144,7 @@ static inline int main_menu(SDL_Window *window, SDL_Renderer *renderer, FILE *lo
 		}
 		else {
 			u.hex = BUTTON_FOCUSED_COLOR;
-			if (false == SDL_SetRenderDrawColor(renderer, u.r, u.g, u.b, 0xff)){
+			if (false == SDL_SetRenderDrawColor(renderer, u.v[2], u.v[1], u.v[0], 0xff)){
 				fprintf(logfp, "SDL_SetRenderDrawColor() error file game_main.c line %d\n%s\n", __LINE__, SDL_GetError());
 				return ERROR_MM;
 			}
@@ -159,7 +159,7 @@ static inline int main_menu(SDL_Window *window, SDL_Renderer *renderer, FILE *lo
 		}
 		if (mpclient_focus){
 			u.hex = BUTTON_UNFOCUSED_COLOR;
-			if (false == SDL_SetRenderDrawColor(renderer, u.r, u.g, u.b, 0xff)){
+			if (false == SDL_SetRenderDrawColor(renderer, u.v[2], u.v[1], u.v[0], 0xff)){
 				fprintf(logfp, "SDL_SetRenderDrawColor() error file game_main.c line %d\n%s\n", __LINE__, SDL_GetError());
 				return ERROR_MM;
 			}
@@ -174,7 +174,7 @@ static inline int main_menu(SDL_Window *window, SDL_Renderer *renderer, FILE *lo
 		}
 		else {
 			u.hex = BUTTON_FOCUSED_COLOR;
-			if (false == SDL_SetRenderDrawColor(renderer, u.r, u.g, u.b, 0xff)){
+			if (false == SDL_SetRenderDrawColor(renderer, u.v[2], u.v[1], u.v[0], 0xff)){
 				fprintf(logfp, "SDL_SetRenderDrawColor() error file game_main.c line %d\n%s\n", __LINE__, SDL_GetError());
 				return ERROR_MM;
 			}
@@ -189,7 +189,7 @@ static inline int main_menu(SDL_Window *window, SDL_Renderer *renderer, FILE *lo
 		}
 		if (cr_focus){
 			u.hex = BUTTON_UNFOCUSED_COLOR;
-			if (false == SDL_SetRenderDrawColor(renderer, u.r, u.g, u.b, 0xff)){
+			if (false == SDL_SetRenderDrawColor(renderer, u.v[2], u.v[1], u.v[0], 0xff)){
 				fprintf(logfp, "SDL_SetRenderDrawColor() error file game_main.c line %d\n%s\n", __LINE__, SDL_GetError());
 				return ERROR_MM;
 			}
@@ -204,7 +204,7 @@ static inline int main_menu(SDL_Window *window, SDL_Renderer *renderer, FILE *lo
 		}
 		else {
 			u.hex = BUTTON_FOCUSED_COLOR;
-			if (false == SDL_SetRenderDrawColor(renderer, u.r, u.g, u.b, 0xff)){
+			if (false == SDL_SetRenderDrawColor(renderer, u.v[2], u.v[1], u.v[0], 0xff)){
 				fprintf(logfp, "SDL_SetRenderDrawColor() error file game_main.c line %d\n%s\n", __LINE__, SDL_GetError());
 				return ERROR_MM;
 			}
@@ -219,7 +219,7 @@ static inline int main_menu(SDL_Window *window, SDL_Renderer *renderer, FILE *lo
 		}
 		if (qt_focus){
 			u.hex = BUTTON_UNFOCUSED_COLOR;
-			if (false == SDL_SetRenderDrawColor(renderer, u.r, u.g, u.b, 0xff)){
+			if (false == SDL_SetRenderDrawColor(renderer, u.v[2], u.v[1], u.v[0], 0xff)){
 				fprintf(logfp, "SDL_SetRenderDrawColor() error file game_main.c line %d\n%s\n", __LINE__, SDL_GetError());
 				return ERROR_MM;
 			}
@@ -234,7 +234,7 @@ static inline int main_menu(SDL_Window *window, SDL_Renderer *renderer, FILE *lo
 		}
 		else {
 			u.hex = BUTTON_FOCUSED_COLOR;
-			if (false == SDL_SetRenderDrawColor(renderer, u.r, u.g, u.b, 0xff)){
+			if (false == SDL_SetRenderDrawColor(renderer, u.v[2], u.v[1], u.v[0], 0xff)){
 				fprintf(logfp, "SDL_SetRenderDrawColor() error file game_main.c line %d\n%s\n", __LINE__, SDL_GetError());
 				return ERROR_MM;
 			}
@@ -316,7 +316,6 @@ static inline int main_menu(SDL_Window *window, SDL_Renderer *renderer, FILE *lo
 	SDL_DestroyTexture(char_tex);
 	return r;
 }
-
 
 static inline int game_init(SDL_Window **window, SDL_Renderer **renderer, FILE **logfp){
 	SDL_DisplayID *display_ids;

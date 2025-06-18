@@ -2,10 +2,10 @@
 #define TANK_GAME_H
 
 /* List of colors RGB values */
-#define RANI_COLOR 0xFF00FF
-#define TITLE_COLOR 0x1B4266
-#define BUTTON_UNFOCUSED_COLOR 0x3BE2D9
-#define BUTTON_FOCUSED_COLOR 0x291B49
+#define RANI_COLOR		0xFF00FF
+#define TITLE_COLOR		0x204450
+#define BUTTON_UNFOCUSED_COLOR	0x4B20A8
+#define BUTTON_FOCUSED_COLOR	0x927EBD
 
 /* Image sizes of used images */
 #define SAND_IMG_W 256
@@ -56,10 +56,7 @@ struct shell {
 };
 
 union rgb {
-	char s;
-	char r;
-	char g;
-	char b;
+	char v[4];
 	int hex;
 };
 

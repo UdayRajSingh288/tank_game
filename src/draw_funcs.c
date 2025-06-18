@@ -14,7 +14,7 @@ int draw_tiled_background(FILE *logfp, SDL_Renderer *renderer, SDL_Texture *tex,
 		rect.x = 0.0f;
 		while (rect.x <= (float)window_width){
 			if (false == SDL_RenderTexture(renderer, tex, NULL, &rect)){
-				fprintf(logfp, "SDL_RenderTexture() error file reuse_funcs.c line %d\n%s\n", __LINE__, SDL_GetError());
+				fprintf(logfp, "SDL_RenderTexture() error file draw_funcs.c line %d\n%s\n", __LINE__, SDL_GetError());
 				return EXIT_FAILURE;
 			}
 			rect.x += rect.w;
@@ -57,8 +57,8 @@ int draw_text(FILE *logfp, SDL_Renderer *renderer, SDL_Texture *char_tex, const 
 			dst.x = space->x + (float)(((int)space->w - slen) / 2);
 	}
 	u.hex = color;
-	if (false == SDL_SetTextureColorMod(char_tex, u.r, u.g, u.b)){
-		fprintf(logfp, "SDL_SetTextureColorMod() error file reuse_funcs.c line %d\n%s\n", __LINE__, SDL_GetError());
+	if (false == SDL_SetTextureColorMod(char_tex, u.v[2], u.v[1], u.v[0])){
+		fprintf(logfp, "SDL_SetTextureColorMod() error file draw_funcs.c line %d\n%s\n", __LINE__, SDL_GetError());
 		return EXIT_FAILURE;
 	}
 	for (i = 0; str[i]; ++i){
@@ -67,13 +67,13 @@ int draw_text(FILE *logfp, SDL_Renderer *renderer, SDL_Texture *char_tex, const 
 		src.x = (float)(c * CHAR_W);
 		src.y = (float)(r * CHAR_H);
 		if (false == SDL_RenderTexture(renderer, char_tex, &src, &dst)){
-			fprintf(logfp, "SDL_RenderTexture() error file reuse_funcs.c line %d\n%s\n", __LINE__, SDL_GetError());
+			fprintf(logfp, "SDL_RenderTexture() error file draw_funcs.c line %d\n%s\n", __LINE__, SDL_GetError());
 			return EXIT_FAILURE;
 		}
 		dst.x += dst.w;
 	}
 	if (false == SDL_SetTextureColorMod(char_tex, 0xff, 0xff, 0xff)){
-		fprintf(logfp, "SDL_SetTextureColorMod() error file reuse_funcs.c line %d\n%s\n", __LINE__, SDL_GetError());
+		fprintf(logfp, "SDL_SetTextureColorMod() error file draw_funcs.c line %d\n%s\n", __LINE__, SDL_GetError());
 		return EXIT_FAILURE;
 	}
 	return EXIT_SUCCESS;
